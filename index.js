@@ -39,3 +39,6 @@ app.post("/users", async (req, res) => {
     res.status(500).send({ error: "Failed to create account" });
   }
 });
+
+
+module.exports = app;
