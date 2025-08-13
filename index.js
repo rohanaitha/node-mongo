@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+const jwt = require('jwttoken')
 dotenv.config();
 
 app.use(cors());
@@ -38,5 +39,34 @@ app.post("/users", async (req, res) => {
     res.status(500).send({ error: "Failed to create account" });
   }
 });
+
+app.get("/users", async (req, res) => {
+  try {
+    const user = await Account.find();
+    res.status(200).send(user);
+  } catch {
+    res.status(500).send("error occured");
+  }
+});
+
+const authenticatMiddleware = async (req, res, next) => {
+  const { name, email, password } = req.body;
+  const userDetails = await Account.find({ name });
+  if (userDetails === undefined) {
+    const payload = {
+        name:name,
+        email:email,
+        password:password
+    }
+    const token = jwt.sign(payload,"MY_SECRET_CODE")
+    res.send({
+        jwttoken: token
+    })
+  } else {
+    res.send("user registered");
+  }
+};
+
+app.post("/register", authenticatMiddleware, (req, res) => {});
 
 module.exports = app;
