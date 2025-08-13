@@ -1,10 +1,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-
+const cors = require("cors");
 const app = express();
 dotenv.config();
 
+app.use(cors());
 app.use(express.json());
 
 app.listen(5000, () => {
@@ -37,6 +38,5 @@ app.post("/users", async (req, res) => {
     res.status(500).send({ error: "Failed to create account" });
   }
 });
-
 
 module.exports = app;
