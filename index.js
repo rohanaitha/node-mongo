@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-const jwt = require('jwttoken')
+const jsonwebtoken = require("jsonwebtoken");
 dotenv.config();
 
 app.use(cors());
