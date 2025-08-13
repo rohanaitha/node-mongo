@@ -6,7 +6,11 @@ const app = express();
 const jsonwebtoken = require("jsonwebtoken");
 dotenv.config();
 
-app.use(cors());
+app.use(
+  cors({
+    method: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
 
 app.listen(5000, () => {
@@ -54,14 +58,14 @@ const authenticatMiddleware = async (req, res, next) => {
   const userDetails = await Account.find({ name });
   if (userDetails === undefined) {
     const payload = {
-        name:name,
-        email:email,
-        password:password
-    }
-    const token = jwt.sign(payload,"MY_SECRET_CODE")
+      name: name,
+      email: email,
+      password: password,
+    };
+    const token = jwt.sign(payload, "MY_SECRET_CODE");
     res.send({
-        jwttoken: token
-    })
+      jwttoken: token,
+    });
   } else {
     res.send("user registered");
   }
